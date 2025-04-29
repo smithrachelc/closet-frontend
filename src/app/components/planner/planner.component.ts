@@ -23,6 +23,7 @@ export class PlannerComponent implements OnInit {
     }).subscribe({
       next: (data) => {
         this.savedOutfits = data;
+        console.log('Fetched outfits:', data);  // ✅ See what you fetched
       },
       error: (err) => {
         console.error('Failed to fetch outfits:', err);
