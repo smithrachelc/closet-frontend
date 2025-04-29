@@ -13,53 +13,14 @@
   text-align: center;
 }
 
-.outfit-card h3 {
-  margin-bottom: 15px;
-  color: #ff4081;
-  font-size: 1.5rem;
-}
-
 .clothing-grid {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 15px;
-  margin-bottom: 15px;
 }
 
 .clothing-item {
   width: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.clothing-item img {
-  width: 80px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.clothing-item p {
-  margin-top: 5px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.public-btn {
-  background-color: hotpink;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 20px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  transition: background 0.3s ease;
-}
-
-.public-btn:hover {
-  background-color: #e60073;
+  text-align: center;
 }
