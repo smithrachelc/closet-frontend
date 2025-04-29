@@ -1,32 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { ClothingService } from '../../services/clothing.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  imports: [CommonModule, RouterModule]
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  clothingItems: any[] = [];
+  items: any[] = [];
 
-  constructor(private clothingService: ClothingService, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.clothingService.getMyClothing().subscribe({
-      next: (items: any[]) => this.clothingItems = items,
-      error: err => console.error('Failed to load clothing:', err)
+    const token = localStorage.getItem('token');
+    this.http.get<any[]>('https://closet-backend-pi.vercel.app/api/clothing/my', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).subscribe({
+      next: (data) => this.items = data,
+      error: (err) => console.error('Failed to load clothing:', err)
     });
-  }
-
-  goToUpload() {
-    this.router.navigate(['/upload']);
-  }
-
-  goToPlanner() {
-    this.router.navigate(['/planner']);
   }
 }

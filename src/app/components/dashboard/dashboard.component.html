@@ -1,13 +1,10 @@
-<div class="dashboard-container">
-  <h2>My Closet</h2>
-  <div class="buttons">
-    <button (click)="goToUpload()">Upload Clothing</button>
-    <button (click)="goToPlanner()">Plan Outfit</button>
-  </div>
-  <div class="clothing-grid">
-    <div *ngFor="let item of clothingItems" class="clothing-item">
+<div class="page">
+  <h2>Items</h2>
+  <div class="card-grid">
+    <div class="card" *ngFor="let item of items">
       <img [src]="item.imageUrl" alt="{{ item.name }}">
       <p>{{ item.name }}</p>
+      <button class="btn">Add</button>
     </div>
   </div>
 </div>
