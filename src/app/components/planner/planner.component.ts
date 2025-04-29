@@ -12,15 +12,18 @@ export class PlannerComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    console.log('PlannerComponent Loaded ✅');
     this.fetchOutfits();
   }
 
   fetchOutfits(): void {
     const token = localStorage.getItem('token');
+    console.log('Fetching outfits... Token:', token); // ✅ Add this line
     this.http.get<any[]>('https://closet-backend-pi.vercel.app/api/outfits/my', {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: (data) => {
+        console.log('Fetched outfits:', data); // ✅ Add this
         this.outfits = data;
       },
       error: (err) => {
@@ -28,6 +31,7 @@ export class PlannerComponent implements OnInit {
       }
     });
   }
+  
 
   makePublic(index: number): void {
     const outfitId = this.outfits[index]._id;
