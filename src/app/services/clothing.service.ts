@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClothingService {
-  private base = `${environment.apiUrl}/clothing`;
+  private base = `http://closet-backend-theta.vercel.app/api/clothing`;
 
   constructor(private http: HttpClient) { }
 
