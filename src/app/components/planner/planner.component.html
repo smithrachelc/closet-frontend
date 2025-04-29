@@ -1,21 +1,13 @@
 <div class="page">
-  <h2>Saved Outfits</h2>
+  <h2>My Saved Outfits</h2>
 
-  <div *ngIf="outfits && outfits.length > 0">
-    <div *ngFor="let outfit of outfits" class="outfit-card">
-      <h3>{{ outfit.name }}</h3>
-  
-      <div class="clothing-grid">
-        <div *ngFor="let item of outfit.clothingItems" class="clothing-item">
-          <img [src]="item.imageUrl" [alt]="item.name" width="100" />
-          <p>{{ item.name }}</p>
-        </div>
+  <div *ngFor="let outfit of outfits" class="card">
+    <h3>{{ outfit.name }}</h3>
+    <div class="card-grid">
+      <div class="card small" *ngFor="let item of outfit.clothingItems">
+        <img [src]="item.imageUrl" width="80" />
+        <p>{{ item.name }}</p>
       </div>
     </div>
   </div>
-  
-
-  <ng-template #noOutfits>
-    <p style="text-align: center;">No saved outfits yet.</p>
-  </ng-template>
 </div>
