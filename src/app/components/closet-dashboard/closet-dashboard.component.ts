@@ -1,34 +1,71 @@
-import { Component, OnInit } from '@angular/core';
-import { ClothingService } from '../../services/clothing.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { OutfitService } from '../../services/outfit.service';
+import { OutfitPlannerComponent } from '../outfit-planner/outfit-planner.component';
+
+
+interface ClothingItem {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
 
 @Component({
-  standalone: true,
   selector: 'app-closet-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, OutfitPlannerComponent],
   templateUrl: './closet-dashboard.component.html',
-  styleUrls: ['./closet-dashboard.component.css'],
-  imports: [CommonModule, RouterModule]
+  styleUrls: ['./closet-dashboard.component.css']
 })
 export class ClosetDashboardComponent implements OnInit {
-  clothingItems: any[] = [];
-  errorMessage = '';
+  token = 'your-auth-token'; // Replace with real token logic
+  clothing: ClothingItem[] = [];
+  selectedItems: ClothingItem[] = [];
 
-  constructor(private clothingService: ClothingService) {}
+  newOutfitName: string = '';
+  makePublic: boolean = false;
 
-  ngOnInit(): void {
-    this.loadClothingItems();
+  private outfitService = inject(OutfitService);
+
+  ngOnInit() {
+    this.loadClothing();
   }
 
-  loadClothingItems(): void {
-    this.clothingService.getClothingItems().subscribe({
-      next: (items: any[]) => {
-        this.clothingItems = items;
+  loadClothing() {
+    // You should replace this with your real clothing-fetching service
+    // Example format:
+    this.clothing = [
+      {
+        _id: '1',
+        name: 'Blue Shirt',
+        imageUrl: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
       },
-      error: (err) => {
-        console.error('Error loading clothing:', err);
-        this.errorMessage = 'Failed to load clothing. Please refresh.';
+      {
+        _id: '2',
+        name: 'Sunglasses',
+        imageUrl: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
       }
+    ];
+  }
+
+  addToOutfit(item: ClothingItem) {
+    if (!this.selectedItems.find(i => i._id === item._id)) {
+      this.selectedItems.push(item);
+    }
+  }
+
+  removeFromOutfit(item: ClothingItem) {
+    this.selectedItems = this.selectedItems.filter(i => i._id !== item._id);
+  }
+
+  saveOutfit() {
+    const items = this.selectedItems.map(item => ({ name: item.name, imageUrl: item.imageUrl }));
+
+    this.outfitService.createOutfit(this.newOutfitName, items, this.token).subscribe(() => {
+      this.selectedItems = [];
+      this.newOutfitName = '';
+      this.makePublic = false;
     });
   }
 }

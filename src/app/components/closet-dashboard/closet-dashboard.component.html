@@ -1,17 +1,32 @@
 <div class="dashboard-container">
-  <h2>My Closet</h2>
+  <h1>My Closet</h1>
 
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-
-  <div *ngIf="clothingItems.length === 0 && !errorMessage">
-    <p>No clothing items uploaded yet. Start uploading!</p>
+  <div class="items-grid">
+    <div *ngFor="let item of clothing" class="item-card">
+      <img [src]="item.imageUrl" [alt]="item.name" class="item-img" />
+      <p class="item-name">{{ item.name }}</p>
+      <button (click)="addToOutfit(item)" class="add-button">Add</button>
+    </div>
   </div>
 
-  <div class="clothing-grid">
-    <div *ngFor="let item of clothingItems" class="clothing-card">
-      <img [src]="item.imagePath" alt="Clothing Image" />
-      <h4>{{ item.name }}</h4>
-      <p>{{ item.category }}</p>
+  <div *ngIf="selectedItems.length > 0" class="outfit-builder">
+    <h2>Create New Outfit</h2>
+
+    <div class="selected-items">
+      <div *ngFor="let item of selectedItems" class="selected-item">
+        <img [src]="item.imageUrl" [alt]="item.name" />
+        <p>{{ item.name }}</p>
+        <button (click)="removeFromOutfit(item)" class="remove-button">Remove</button>
+      </div>
     </div>
+
+    <input [(ngModel)]="newOutfitName" placeholder="Outfit Name" class="outfit-name-input" />
+    
+    <label class="toggle-label">
+      <input type="checkbox" [(ngModel)]="makePublic" />
+      Make Public
+    </label>
+
+    <button (click)="saveOutfit()" class="save-button">Save Outfit</button>
   </div>
 </div>

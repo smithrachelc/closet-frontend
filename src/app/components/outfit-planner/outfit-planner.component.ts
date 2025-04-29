@@ -1,32 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { OutfitService } from '../../services/outfit.service';
+
+interface ClothingItem {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
 
 @Component({
   selector: 'app-outfit-planner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './outfit-planner.component.html',
   styleUrls: ['./outfit-planner.component.css']
 })
-export class OutfitPlannerComponent implements OnInit {
-  outfits: any[] = [];
+export class OutfitPlannerComponent {
+  @Input() selectedItems: ClothingItem[] = [];
+  @Input() token: string = '';
 
-  ngOnInit(): void {
-    this.loadOutfits();
+  outfitName: string = '';
+  makePublic: boolean = false;
+
+  constructor(private outfitService: OutfitService) {}
+
+  removeItem(item: ClothingItem) {
+    this.selectedItems = this.selectedItems.filter(i => i._id !== item._id);
   }
 
-  loadOutfits(): void {
-    this.outfits = JSON.parse(localStorage.getItem('savedOutfits') || '[]');
-  }
+  saveOutfit() {
+    const items = this.selectedItems.map(item => ({
+      name: item.name,
+      imageUrl: item.imageUrl
+    }));
 
-  deleteOutfit(index: number): void {
-    this.outfits.splice(index, 1);
-    localStorage.setItem('savedOutfits', JSON.stringify(this.outfits));
-  }
-
-  makePublic(index: number): void {
-    const publicOutfits = JSON.parse(localStorage.getItem('publicOutfits') || '[]');
-    publicOutfits.push(this.outfits[index]);
-    localStorage.setItem('publicOutfits', JSON.stringify(publicOutfits));
+    this.outfitService.createOutfit(this.outfitName, items, this.token).subscribe(() => {
+      this.selectedItems.length = 0; // clear selection
+      this.outfitName = '';
+      this.makePublic = false;
+    });
   }
 }
