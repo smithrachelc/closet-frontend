@@ -7,6 +7,7 @@ import { UploadClothingComponent } from './components/upload-clothing/upload-clo
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { AccountComponent } from './components/account/account.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },                     // default page
@@ -16,5 +17,6 @@ export const appRoutes: Routes = [
   { path: 'upload-clothing', component: UploadClothingComponent },
   { path: 'admin', component: AdminPanelComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  { path: 'account', component: AccountComponent },
 ];

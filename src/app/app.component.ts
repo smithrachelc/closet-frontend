@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { AuthService } from './services/auth.service'; // adjust path if needed
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  imports: [CommonModule, RouterModule]
 })
 export class AppComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  isLoggedIn = false;
+  isAdmin = false;
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.isLoggedInObservable().subscribe((loggedIn: boolean) => {
+
+      this.isLoggedIn = loggedIn;
+      this.isAdmin = this.authService.getRole() === 'admin';
+    });
   }
 
   logout() {
