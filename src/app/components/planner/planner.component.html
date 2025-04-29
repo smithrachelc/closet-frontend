@@ -8,7 +8,7 @@
 
         <div class="card-grid">
           <div class="card small" *ngFor="let item of outfit.clothingItems">
-            <img [src]="item.imageUrl" width="80" />
+            <img [src]="item.imageUrl" alt="{{ item.name }}" />
             <p>{{ item.name }}</p>
           </div>
         </div>
@@ -17,6 +17,6 @@
   </div>
 
   <ng-template #noOutfits>
-    <p>No saved outfits yet.</p>
+    <p style="text-align: center; margin-top: 2rem;">No saved outfits yet.</p>
   </ng-template>
 </div>
