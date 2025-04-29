@@ -40,6 +40,7 @@ export class AuthService {
       password
     });
   }
+  
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
