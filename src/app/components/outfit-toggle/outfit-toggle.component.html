@@ -1,0 +1,8 @@
+<div class="toggle-container">
+    <button (click)="toggleVisibility()" class="toggle-button">
+      {{ isPublic ? 'Make Private' : 'Make Public' }}
+    </button>
+  
+    <p *ngIf="message" class="message">{{ message }}</p>
+  </div>
+  
