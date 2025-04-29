@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class OutfitService {
-  private base = `http://closet-backend-theta.vercel.app/api/outfit`;
+  private base = `https://closet-backend-theta.vercel.app/api/outfit`;
 
   // Exposed as an Observable for your component to subscribe to:
   public publicOutfits$ = new BehaviorSubject<any[]>([]);

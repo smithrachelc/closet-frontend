@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClothingService {
-  private base = `http://closet-backend-theta.vercel.app/api/clothing`;
+  private base = `https://closet-backend-theta.vercel.app/api/clothing`;
 
   constructor(private http: HttpClient) { }
 
