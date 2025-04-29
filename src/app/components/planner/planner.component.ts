@@ -39,7 +39,7 @@ export class PlannerComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: () => {
-        this.fetchOutfits(); // Refresh the list after toggling
+        this.fetchOutfits();
       },
       error: (err) => {
         console.error('Failed to make outfit public:', err);

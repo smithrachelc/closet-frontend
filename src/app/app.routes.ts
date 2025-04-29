@@ -14,5 +14,5 @@ export const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'upload', component: UploadComponent },
   { path: 'planner', component: PlannerComponent },
-  { path: 'public-outfits', component: PublicOutfitsComponent }
+  { path: 'public', loadComponent: () => import('./components/public-outfits/public-outfits.component').then(m => m.PublicOutfitsComponent) },
 ];
