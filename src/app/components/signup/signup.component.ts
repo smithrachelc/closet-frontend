@@ -1,39 +1,36 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; 
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
+  standalone: true, // ✅ If you're using standalone components
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  signupForm: FormGroup;
-  successMessage = '';
+  name = '';
+  email = '';
+  password = '';
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
-    this.signupForm = this.fb.group({
-      fullName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+  constructor(private authService: AuthService, private router: Router) {}
+
+  signup() {
+    this.authService.signup(this.name, this.email, this.password).subscribe({
+      next: (res: any) => {
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']); // or home
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Sign up failed. Email may already be in use.';
+      }
     });
-  }
-
-  onSubmit(): void {
-    if (this.signupForm.valid) {
-      this.http.post('/api/signup', this.signupForm.value).subscribe({
-        next: () => {
-          this.successMessage = 'Signup successful!';
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          console.error('Signup failed', err);
-        },
-      });
-    }
   }
 }

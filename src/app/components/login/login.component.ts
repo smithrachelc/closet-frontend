@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
   imports: [CommonModule, FormsModule],
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
   email = '';
@@ -19,17 +19,20 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   logIn(): void {
-    const credentials = { email: this.email, password: this.password };
-
-    this.http.post<{ token: string }>('/api/login', credentials).subscribe({
-      next: (res) => {
-        localStorage.setItem('token', res.token); // or save user info as needed
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('Login error:', err);
-        this.errorMessage = 'Invalid email or password.';
-      },
-    });
+    this.http
+      .post<{ token: string }>(
+        `${environment.apiUrl}/api/login`,
+        { email: this.email, password: this.password }
+      )
+      .subscribe({
+        next: res => {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/dashboard']);
+        },
+        error: err => {
+          console.error('Login error:', err);
+          this.errorMessage = 'Invalid email or password.';
+        }
+      });
   }
 }
