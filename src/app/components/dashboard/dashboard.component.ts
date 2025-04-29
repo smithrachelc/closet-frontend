@@ -56,19 +56,26 @@ export class DashboardComponent implements OnInit {
 
   saveOutfit(): void {
     if (!this.outfitName.trim() || this.selectedOutfit.length === 0) return;
-
-    const outfit = {
+  
+    const token = localStorage.getItem('token');
+    this.http.post('https://closet-backend-pi.vercel.app/api/outfits/save', {
       name: this.outfitName,
-      items: this.selectedOutfit,
-    };
-
-    const existingOutfits = JSON.parse(localStorage.getItem('savedOutfits') || '[]');
-    existingOutfits.push(outfit);
-    localStorage.setItem('savedOutfits', JSON.stringify(existingOutfits));
-
-    this.outfitName = '';
-    this.selectedOutfit = [];
+      items: this.selectedOutfit
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        this.outfitName = '';
+        this.selectedOutfit = [];
+        alert('Outfit saved!');
+      },
+      error: (err) => {
+        console.error('Failed to save outfit:', err);
+        alert('Failed to save outfit');
+      }
+    });
   }
+  
 
   cancelOutfit(): void {
     this.outfitName = '';
