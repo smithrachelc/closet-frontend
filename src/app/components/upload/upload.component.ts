@@ -18,6 +18,7 @@ export class UploadComponent {
   preview: string | null = null;
   successMessage = '';
   errorMessage = '';
+  loading = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -34,10 +35,18 @@ export class UploadComponent {
 
   uploadClothing(): void {
     const token = localStorage.getItem('token');
-    if (!token || !this.preview) {
-      this.errorMessage = 'Missing token or image';
+    if (!token) {
+      this.errorMessage = 'You must be logged in to upload clothing.';
       return;
     }
+    if (!this.preview) {
+      this.errorMessage = 'Please select an image.';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
     this.http.post('https://closet-backend-pi.vercel.app/api/clothing/upload', {
       name: this.name,
@@ -47,8 +56,8 @@ export class UploadComponent {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: () => {
-        this.successMessage = 'Clothing uploaded!';
-        this.errorMessage = '';
+        this.loading = false;
+        this.successMessage = 'Clothing uploaded successfully!';
         this.name = '';
         this.category = '';
         this.preview = null;
@@ -56,8 +65,9 @@ export class UploadComponent {
       },
       error: err => {
         console.error('Upload error:', err);
+        this.loading = false;
         this.successMessage = '';
-        this.errorMessage = 'Upload failed.';
+        this.errorMessage = 'Upload failed. Please try again.';
       }
     });
   }
