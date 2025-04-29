@@ -24,6 +24,7 @@ export class LoginComponent {
       next: (res: any) => {
         this.authService.saveToken(res.token);
         this.router.navigate(['/dashboard']);
+
       },
       error: (err) => {
         console.error(err);

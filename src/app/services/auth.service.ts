@@ -38,10 +38,9 @@ export class AuthService {
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
-    const decoded = jwt_decode(token) as DecodedToken; // ✅
-
-    this.userRole.next(decoded.role || '');
     this.loggedIn.next(true);
+    const decoded = jwt_decode(token) as DecodedToken;
+    this.userRole.next(decoded.role || '');
   }
 
   logout() {
