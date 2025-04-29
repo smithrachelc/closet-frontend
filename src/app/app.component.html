@@ -1,31 +1,24 @@
-<header>
-  <h1>Closet Cleanup</h1>
-  <nav>
-    <a routerLink="/">Home</a> |
-    <a routerLink="/public-outfits">Public Outfits</a> |
+<nav>
+  <a routerLink="/">Home</a> |
+  <a routerLink="/public-outfits">Public Outfits</a> |
 
-    <ng-container *ngIf="isLoggedIn">
-      <a routerLink="/dashboard">Dashboard</a> |
-      <a routerLink="/outfit-planner">Outfit Planner</a> |
-      <a routerLink="/upload-clothing">Upload Clothing</a> |
-    </ng-container>
+  <ng-container *ngIf="isLoggedIn">
+    <a routerLink="/dashboard">Dashboard</a> |
+    <a routerLink="/outfit-planner">Outfit Planner</a> |
+    <a routerLink="/upload-clothing">Upload Clothing</a> |
+  </ng-container>
 
-    <ng-container *ngIf="isLoggedIn && isAdmin">
-      <a routerLink="/admin">Admin</a> |
-    </ng-container>
+  <ng-container *ngIf="isLoggedIn && isAdmin">
+    <a routerLink="/admin">Admin</a> |
+  </ng-container>
 
-    <ng-container *ngIf="!isLoggedIn">
-      <a routerLink="/login">Login</a> |
-      <a routerLink="/signup">Sign Up</a>
-    </ng-container>
+  <ng-container *ngIf="!isLoggedIn">
+    <a routerLink="/login">Login</a> |
+    <a routerLink="/signup">Sign Up</a>
+  </ng-container>
 
-    <ng-container *ngIf="isLoggedIn">
-      <a routerLink="/account">My Account</a> |
-      <a (click)="logout()" style="cursor: pointer;">Logout</a>
-    </ng-container>
-  </nav>
-</header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <ng-container *ngIf="isLoggedIn">
+    <a routerLink="/account">My Account</a> |
+    <a (click)="logout()" style="cursor: pointer;">Logout</a>
+  </ng-container>
+</nav>

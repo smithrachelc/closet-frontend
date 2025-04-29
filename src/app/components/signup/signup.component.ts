@@ -23,8 +23,7 @@ export class SignupComponent {
     this.authService.signup(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
         this.authService.saveToken(res.token);
-        this.router.navigate(['/dashboard']);
-
+        this.router.navigate(['/dashboard']); // ✅ Redirect to Dashboard after signup
       },
       error: (err) => {
         console.error(err);
@@ -32,4 +31,5 @@ export class SignupComponent {
       }
     });
   }
+  
 }
