@@ -33,8 +33,8 @@ export class UploadComponent {
     if (!this.imageFile) return;
     const reader = new FileReader();
     reader.onloadend = () => {
-      const base64 = reader.result;
-      this.clothingService.uploadClothing(this.name, this.category, base64).subscribe({
+      const base64 = reader.result as string;
+      this.clothingService.addClothingItem(this.name, this.category, base64).subscribe({
         next: () => this.router.navigate(['/dashboard']),
         error: err => console.error('Upload failed:', err)
       });

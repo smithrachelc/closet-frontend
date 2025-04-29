@@ -25,7 +25,7 @@ export class PlannerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.clothingService.getMyClothing().subscribe({
+    this.clothingService.getClothingItems().subscribe({
       next: (items: any[]) => this.clothingItems = items,
 
       error: err => console.error('Failed to load clothing:', err)

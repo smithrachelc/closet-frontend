@@ -1,24 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from './auth.service';
 
-@Injectable({ providedIn: 'root' })
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ClothingService {
-  private baseUrl = 'https://closet-backend-pi.vercel.app/api/clothing';
+  private base = `https://closet-backend-pi.vercel.app/api//clothing`;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) { }
 
-  uploadClothing(name: string, category: string, imageBase64: any) {
-    const token = this.authService.getToken();
-    return this.http.post(`${this.baseUrl}/upload`, { name, category, image: imageBase64 }, {
+  /** Used by ClosetDashboardComponent */
+  getClothingItems(category?: string): Observable<any[]> {
+    // if a category is passed, call /category/:category
+    if (category) {
+      return this.http.get<any[]>(`${this.base}/category/${category}`);
+    }
+    // otherwise list all
+    return this.http.get<any[]>(`${this.base}/all`);
+  }
+
+  /** Used by UploadClothingComponent */
+  addClothingItem(name: string, category: string, image: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.post('/api/clothing/upload', {
+      name,
+      category,
+      image
+    }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
-
-  getMyClothing() {
-    const token = this.authService.getToken();
-    return this.http.get(`${this.baseUrl}/mine`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-  }
+  
+  
+  
 }

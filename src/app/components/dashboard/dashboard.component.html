@@ -1,10 +1,34 @@
 <div class="page">
   <h2>Items</h2>
+  <div class="categories">
+    <button *ngFor="let category of categories"
+            class="btn"
+            (click)="navigateTo(category)">
+      {{ category }}
+    </button>
+  </div>
+
   <div class="card-grid">
-    <div class="card" *ngFor="let item of items">
+    <div class="card" *ngFor="let item of filteredItems">
       <img [src]="item.imageUrl" alt="{{ item.name }}">
       <p>{{ item.name }}</p>
-      <button class="btn">Add</button>
+      <button class="btn" (click)="addToOutfit(item)">Add</button>
+    </div>
+  </div>
+
+  <div class="form-box" *ngIf="selectedOutfit.length > 0">
+    <h3>Selected Items</h3>
+    <div class="card-grid">
+      <div class="card" *ngFor="let item of selectedOutfit">
+        <img [src]="item.imageUrl" alt="{{ item.name }}">
+        <p>{{ item.name }}</p>
+      </div>
+    </div>
+
+    <input type="text" placeholder="Outfit Name" [(ngModel)]="outfitName">
+    <div style="margin-top: 10px;">
+      <button class="btn" (click)="saveOutfit()">Save Outfit</button>
+      <button class="btn-outline" (click)="cancelOutfit()">Cancel</button>
     </div>
   </div>
 </div>
