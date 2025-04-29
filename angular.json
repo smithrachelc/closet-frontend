@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "closet-frontend-fixed": {
+    "closet-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/closet-frontend-fixed",
+            "outputPath": "dist/closet-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "closet-frontend-fixed:build:production"
+              "buildTarget": "closet-frontend:build:production"
             },
             "development": {
-              "buildTarget": "closet-frontend-fixed:build:development"
+              "buildTarget": "closet-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d0d056e6-f580-40bb-ac04-0ae3f34ad6c4"
   }
 }
