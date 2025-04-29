@@ -1,29 +1,30 @@
-/* reused pink style */
-.form-container {
-  width: 300px;
-  margin: 50px auto;
-  background: #ffe6f0;
-  padding: 20px;
+.dashboard-container {
+  padding: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.clothing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.clothing-item {
+  background-color: white;
+  padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 140px;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
-input {
+.clothing-item img {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-button {
-  background-color: #ff66a3;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
+  height: 140px;
+  object-fit: cover;
   border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #ff3385;
 }

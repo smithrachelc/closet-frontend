@@ -13,7 +13,7 @@ export interface DecodedToken {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://closet-backend-pi.vercel.app/api/auth';
+  private baseUrl = 'https://closet-backend-pi.vercel.app/api/auth';
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   private userRole = new BehaviorSubject<string>('');
 
@@ -32,6 +32,7 @@ export class AuthService {
   signup(name: string, email: string, password: string) {
     return this.http.post(`${this.baseUrl}/register`, { name, email, password });
   }
+  
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
