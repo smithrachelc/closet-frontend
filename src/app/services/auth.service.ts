@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import * as jwt_decode_ns from 'jwt-decode';
-// @ts-ignore
-const jwt_decode = require('jwt-decode');
+import jwt_decode from 'jwt-decode';
 
 export interface DecodedToken {
   id: string;
@@ -14,8 +12,7 @@ export interface DecodedToken {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'https://closet-backend-theta.vercel.app/api/auth';
-
+  private baseUrl = 'http://closet-backend-pi.vercel.app/api/auth';
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   private userRole = new BehaviorSubject<string>('');
 

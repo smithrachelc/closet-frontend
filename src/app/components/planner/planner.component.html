@@ -1,0 +1,17 @@
+<div class="form-container">
+  <h2>Plan an Outfit</h2>
+  <form (ngSubmit)="saveOutfit()">
+    <input [(ngModel)]="outfitName" name="outfitName" placeholder="Outfit Name" required>
+    <label>
+      <input type="checkbox" [(ngModel)]="isPublic" name="isPublic">
+      Public Outfit
+    </label>
+    <div class="clothing-grid">
+      <div *ngFor="let item of clothingItems" class="clothing-item" [class.selected]="selectedItems.includes(item)" (click)="toggleSelection(item)">
+        <img [src]="item.imageUrl" alt="{{ item.name }}">
+        <p>{{ item.name }}</p>
+      </div>
+    </div>
+    <button type="submit">Save Outfit</button>
+  </form>
+</div>

@@ -1,0 +1,10 @@
+<div class="form-container">
+  <h2>Upload Clothing</h2>
+  <form (ngSubmit)="uploadClothing()">
+    <input [(ngModel)]="name" name="name" placeholder="Name" required>
+    <input [(ngModel)]="category" name="category" placeholder="Category">
+    <input type="file" (change)="onFileSelected($event)">
+    <img *ngIf="previewUrl" [src]="previewUrl" class="preview">
+    <button type="submit">Upload</button>
+  </form>
+</div>

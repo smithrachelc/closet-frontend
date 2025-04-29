@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
-
 export class LoginComponent {
   email = '';
   password = '';
@@ -22,13 +21,10 @@ export class LoginComponent {
   login() {
     this.authService.login(this.email, this.password).subscribe({
       next: (res: any) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/closet-dashboard']);
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        console.error('Login failed:', err);
-        this.errorMessage = 'Invalid email or password.';
-      }
+      error: () => this.errorMessage = 'Invalid login.'
     });
   }
 }

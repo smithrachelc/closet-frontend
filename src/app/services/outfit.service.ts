@@ -1,31 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class OutfitService {
-  private base = `${environment.apiUrl}/outfit`;
+  private baseUrl = 'http://closet-backend-pi.vercel.app/api/outfit';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  createOutfit(name: string, clothingItems: any[], isPublic: boolean) {
+    const token = this.authService.getToken();
+    return this.http.post(`${this.baseUrl}/create`, { name, items: clothingItems, isPublic }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  toggleOutfitVisibility(outfitId: string, isPublic: boolean) {
+    const token = this.authService.getToken();
+    return this.http.patch(`${this.baseUrl}/toggle`, { outfitId, isPublic }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
 
   getPublicOutfits() {
-    return this.http.get(`${this.base}/public`);
+    return this.http.get(`${this.baseUrl}/public`);
   }
 
-  getMyOutfits(token: string) {
-    return this.http.get(`${this.base}/mine`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-  }
-
-  createOutfit(name: string, items: any[], token: string) {
-    return this.http.post(`${this.base}/create`, { name, items }, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-  }
-
-  toggleOutfitVisibility(outfitId: string, isPublic: boolean, token: string) {
-    return this.http.patch(`${this.base}/toggle/${outfitId}`, { isPublic }, {
+  deletePublicOutfit(outfitId: string) {
+    const token = this.authService.getToken();
+    return this.http.delete(`${this.baseUrl}/delete/${outfitId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }

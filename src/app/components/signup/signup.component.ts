@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
-
 export class SignupComponent {
   name = '';
   email = '';
@@ -23,13 +22,10 @@ export class SignupComponent {
   signup() {
     this.authService.signup(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/closet-dashboard']);
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        console.error('Signup failed:', err);
-        this.errorMessage = 'Failed to sign up.';
-      }
+      error: () => this.errorMessage = 'Signup failed.'
     });
   }
 }
