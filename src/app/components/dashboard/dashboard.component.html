@@ -1,53 +1,28 @@
-<header>
-  <h1>Closet Cleanup</h1>
-</header>
-<nav>
-  <a routerLink="/">Home</a>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/planner">Outfit Planner</a>
-  <a routerLink="/public">Public Outfits</a>
-  <a routerLink="/upload">Upload Clothing</a>
-  <a routerLink="/admin">Admin</a>
-  <a routerLink="/login">Login</a>
-  <a routerLink="/signup">Sign Up</a>
-</nav>
+<div class="category-buttons">
+  <button *ngFor="let category of categories" (click)="navigateTo(category)">
+    {{ category }}
+  </button>
+</div>
 
-<div class="page">
-  <h2>Items</h2>
-
-  <div class="categories">
-    <button *ngFor="let category of categories"
-            class="btn"
-            (click)="navigateTo(category)">
-      {{ category }}
-    </button>
-  </div>
-
-  <div class="card-grid" *ngIf="filteredItems.length > 0; else noItems">
-    <div class="card" *ngFor="let item of filteredItems">
-      <img [src]="item.imageUrl" alt="{{ item.name }}">
+<div class="items-container">
+  <h3>Items</h3>
+  <div class="clothing-grid">
+    <div *ngFor="let item of filteredItems" class="clothing-item">
+      <img *ngIf="item.imageUrl" [src]="'http://localhost:3000' + item.imageUrl" width="100" />
       <p>{{ item.name }}</p>
-      <button class="btn" (click)="addToOutfit(item)">Add</button>
+      <button class="add-btn" (click)="addToOutfit(item)">Add</button>
     </div>
   </div>
+</div>
 
-  <ng-template #noItems>
-    <p style="margin-top: 2rem; font-size: 1.1rem; color: #555;">No items found in this category.</p>
-  </ng-template>
-
-  <div class="form-box" *ngIf="selectedOutfit.length > 0">
-    <h3>Selected Items</h3>
-    <div class="card-grid">
-      <div class="card" *ngFor="let item of selectedOutfit">
-        <img [src]="item.imageUrl" alt="{{ item.name }}">
-        <p>{{ item.name }}</p>
-      </div>
-    </div>
-
-    <input type="text" placeholder="Outfit Name" [(ngModel)]="outfitName">
-    <div style="margin-top: 10px;">
-      <button class="btn" (click)="saveOutfit()">Save Outfit</button>
-      <button class="btn-outline" (click)="cancelOutfit()">Cancel</button>
+<div class="outfit-creation" *ngIf="selectedOutfit.length > 0">
+  <h3>Create an Outfit</h3>
+  <input type="text" [(ngModel)]="outfitName" placeholder="Outfit name" class="outfit-input" />
+  <div class="selected-items">
+    <div *ngFor="let item of selectedOutfit" class="selected-item">
+      <p>{{ item.name }}</p>
     </div>
   </div>
+  <button class="save-btn" (click)="saveOutfit()">💾 Save</button>
+  <button class="cancel-btn" (click)="cancelOutfit()">Cancel</button>
 </div>
