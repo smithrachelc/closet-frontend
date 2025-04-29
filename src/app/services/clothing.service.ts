@@ -24,10 +24,7 @@ export class ClothingService {
   /** Used by UploadClothingComponent */
   addClothingItem(name: string, category: string, image: string): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.post('/api/clothing/upload', {
-      name,
-      category,
-      image
+    return this.http.post('https://closet-backend-pi.vercel.app/api/clothing/upload', {
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });

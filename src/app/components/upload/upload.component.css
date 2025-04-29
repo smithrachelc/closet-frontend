@@ -1,37 +1,44 @@
-.form-container {
+.upload-container {
   max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input[type="text"], select {
+input, select {
   width: 100%;
-  padding: 0.6rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
   border: 1px solid #ccc;
 }
 
-button {
-  width: 100%;
-  background-color: #ff69b4;
-  border: none;
-  padding: 0.75rem;
-  border-radius: 30px;
+.upload-btn {
+  background-color: #ff66b2;
   color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
   font-weight: bold;
 }
 
-button:hover {
-  background-color: #e055a3;
+.image-preview img {
+  max-width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
-.preview img {
-  width: 80px;
-  height: auto;
-  margin-top: 1rem;
+.success-message {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
 }
