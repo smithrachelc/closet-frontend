@@ -6,7 +6,7 @@
       <div class="card small" *ngFor="let outfit of savedOutfits">
         <h3>{{ outfit.name }}</h3>
 
-        <div *ngIf="outfit.clothingItems && outfit.clothingItems.length > 0; else noItems">
+        <div *ngIf="outfit.clothingItems?.length > 0; else noItems">
           <div class="card-grid">
             <div class="card small" *ngFor="let item of outfit.clothingItems">
               <img *ngIf="item.imageUrl" [src]="item.imageUrl" alt="{{ item.name }}" width="100" />
@@ -16,15 +16,15 @@
         </div>
 
         <ng-template #noItems>
-          <p style="font-size: 0.9rem; color: grey;">No clothing items in this outfit.</p>
+          <p>No clothing items in this outfit.</p>
         </ng-template>
 
-        <button class="btn" (click)="makePublic(outfit._id)" style="margin-top: 10px;">🌐 Make Public</button>
+        <button class="btn" (click)="makePublic(outfit._id)">🌐 Make Public</button>
       </div>
     </div>
   </div>
 
   <ng-template #noOutfits>
-    <p style="margin-top: 2rem; font-size: 1.1rem; color: #555;">No outfits saved yet.</p>
+    <p>No outfits saved yet.</p>
   </ng-template>
 </div>
