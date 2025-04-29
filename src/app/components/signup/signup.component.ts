@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class SignupComponent {
   name = '';
@@ -22,13 +22,10 @@ export class SignupComponent {
   signup() {
     this.authService.signup(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
-        localStorage.setItem('token', res.token);
+        this.authService.saveToken(res.token);
         this.router.navigate(['/dashboard']);
       },
-      error: err => {
-        this.errorMessage = 'Failed to sign up.';
-        console.error(err);
-      }
+      error: () => this.errorMessage = 'User Created!'
     });
   }
 }
