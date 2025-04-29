@@ -20,3 +20,8 @@
     <p style="margin-top: 2rem; font-size: 1.1rem; color: #555;">No outfits saved yet.</p>
   </ng-template>
 </div>
+<div *ngFor="let item of outfit.clothingItems" class="card small">
+  <img *ngIf="item.imageUrl" [src]="item.imageUrl" alt="{{ item.name }}">
+  <p>{{ item.name }}</p>
+  <p style="color:red;">DEBUG: {{ item.imageUrl }}</p> <!-- TEMPORARY -->
+</div>

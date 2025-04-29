@@ -24,3 +24,11 @@
   width: 100px;
   text-align: center;
 }
+.card.small img {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
