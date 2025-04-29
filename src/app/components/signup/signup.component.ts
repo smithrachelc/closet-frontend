@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  standalone: true, // ✅ If you're using standalone components
-  imports: [FormsModule, CommonModule, RouterModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent {
   name = '';
   email = '';
