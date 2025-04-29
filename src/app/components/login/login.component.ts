@@ -20,19 +20,10 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: (res: any) => {
-        this.authService.saveToken(res.token);
-
-        // ✅ Small timeout to ensure state update before navigating
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 100); // 100 milliseconds
-      },
-      error: (err) => {
-        console.error('Login failed:', err);
-        this.errorMessage = 'Login failed. Please check your credentials.';
-      }
+    this.authService.login(this.email, this.password).subscribe((res: any) => {
+      localStorage.setItem('token', res.token);
+      this.router.navigate(['/closet-dashboard']);
     });
+    
   }
 }

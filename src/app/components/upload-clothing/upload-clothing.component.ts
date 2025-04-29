@@ -1,66 +1,67 @@
 import { Component } from '@angular/core';
-import { ClothingService } from '../../services/clothing.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
-  standalone: true,
   selector: 'app-upload-clothing',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './upload-clothing.component.html',
-  styleUrls: ['./upload-clothing.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule]
+  styleUrls: ['./upload-clothing.component.css']
 })
 export class UploadClothingComponent {
-  clothingName: string = '';
-  clothingCategory: string = '';
-  selectedImageFile: File | null = null;
-  imageDataUrl: string | null = null;
-  successMessage: string = '';
-  errorMessage: string = '';
+  clothingName = '';
+  category = '';
+  selectedFile: File | null = null;
+  imageBase64: string = '';
 
-  categories: string[] = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
+  constructor(private http: HttpClient) {}
 
-  constructor(private clothingService: ClothingService) {}
-
-  onImageSelected(event: any): void {
+  onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedImageFile = file;
+      this.selectedFile = file;
 
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imageDataUrl = reader.result as string;
+      reader.onload = (e: any) => {
+        this.imageBase64 = e.target.result;
       };
       reader.readAsDataURL(file);
     }
   }
 
-  uploadClothing(): void {
-    if (!this.clothingName.trim() || !this.clothingCategory || !this.selectedImageFile) {
-      this.errorMessage = 'Please fill out all fields and select an image.';
+  uploadClothing() {
+    if (!this.imageBase64 || !this.clothingName) {
+      alert('Please select an image and provide a name.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('name', this.clothingName);
-    formData.append('category', this.clothingCategory);
-    formData.append('image', this.selectedImageFile);
-
-    this.clothingService.addClothingItem(formData).subscribe({
-      next: (res: any) => {
-        this.successMessage = 'Clothing uploaded successfully!';
-        this.errorMessage = '';
-        this.clothingName = '';
-        this.clothingCategory = '';
-        this.selectedImageFile = null;
-        this.imageDataUrl = null;
-      },
-      error: (err) => {
-        console.error('Upload failed:', err);
-        this.errorMessage = 'Failed to upload clothing. Try again.';
-        this.successMessage = '';
-      }
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
     });
+
+    const payload = {
+      name: this.clothingName,
+      category: this.category,
+      imageBase64: this.imageBase64
+    };
+
+    this.http.post(`${environment.apiUrl}/clothing/upload`, payload, { headers })
+      .subscribe({
+        next: (res) => {
+          alert('Clothing item uploaded successfully!');
+          this.clothingName = '';
+          this.category = '';
+          this.selectedFile = null;
+          this.imageBase64 = '';
+        },
+        error: (err) => {
+          console.error('Upload failed', err);
+          alert('Failed to upload clothing item.');
+        }
+      });
   }
 }

@@ -12,7 +12,7 @@ export class ClothingService {
   constructor(private http: HttpClient) {}
 
   /** Used by ClosetDashboardComponent */
-  getClothingItems(category?: string): Observable<any[]> {
+  getMyClothing(category?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
 

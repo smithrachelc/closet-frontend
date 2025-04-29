@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OutfitService } from '../../services/outfit.service';
+import { ClothingService } from '../../services/clothing.service';
 import { OutfitPlannerComponent } from '../outfit-planner/outfit-planner.component';
-
 
 interface ClothingItem {
   _id: string;
@@ -19,34 +19,26 @@ interface ClothingItem {
   styleUrls: ['./closet-dashboard.component.css']
 })
 export class ClosetDashboardComponent implements OnInit {
-  token = 'your-auth-token'; // Replace with real token logic
+  token = 'your-auth-token'; // Replace with real logic
   clothing: ClothingItem[] = [];
   selectedItems: ClothingItem[] = [];
 
   newOutfitName: string = '';
   makePublic: boolean = false;
 
-  private outfitService = inject(OutfitService);
+  constructor(
+    private outfitService: OutfitService,
+    private clothingService: ClothingService
+  ) {}
 
   ngOnInit() {
     this.loadClothing();
   }
 
   loadClothing() {
-    // You should replace this with your real clothing-fetching service
-    // Example format:
-    this.clothing = [
-      {
-        _id: '1',
-        name: 'Blue Shirt',
-        imageUrl: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
-      },
-      {
-        _id: '2',
-        name: 'Sunglasses',
-        imageUrl: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
-      }
-    ];
+    this.clothingService.getMyClothing(this.token).subscribe((items: ClothingItem[]) => {
+      this.clothing = items;
+    });
   }
 
   addToOutfit(item: ClothingItem) {
@@ -60,7 +52,10 @@ export class ClosetDashboardComponent implements OnInit {
   }
 
   saveOutfit() {
-    const items = this.selectedItems.map(item => ({ name: item.name, imageUrl: item.imageUrl }));
+    const items = this.selectedItems.map(item => ({
+      name: item.name,
+      imageUrl: item.imageUrl
+    }));
 
     this.outfitService.createOutfit(this.newOutfitName, items, this.token).subscribe(() => {
       this.selectedItems = [];
