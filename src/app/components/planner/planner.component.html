@@ -1,16 +1,28 @@
+<header>
+  <h1>Closet Cleanup</h1>
+</header>
+<nav>
+  <a routerLink="/">Home</a>
+  <a routerLink="/dashboard">Dashboard</a>
+  <a routerLink="/planner">Outfit Planner</a>
+  <a routerLink="/public">Public Outfits</a>
+  <a routerLink="/upload">Upload Clothing</a>
+</nav>
 
 <div class="page">
   <h2>Saved Outfits</h2>
+
   <div *ngIf="savedOutfits.length > 0; else noOutfits">
     <div class="card-grid">
       <div class="card" *ngFor="let outfit of savedOutfits">
         <h3>{{ outfit.name }}</h3>
         <div class="card-grid">
-          <div class="card" *ngFor="let item of outfit.items">
+          <div class="card" *ngFor="let item of outfit.clothingItems">
             <img [src]="item.imageUrl" alt="{{ item.name }}">
             <p>{{ item.name }}</p>
           </div>
         </div>
+        <button class="btn" (click)="makePublic(outfit._id)">Make Public</button>
       </div>
     </div>
   </div>

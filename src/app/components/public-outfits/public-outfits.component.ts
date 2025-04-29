@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { OutfitService } from '../../services/outfit.service';
 import { RouterModule } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; 
 @Component({
   standalone: true,
   selector: 'app-public-outfits',
@@ -13,17 +14,20 @@ import { RouterModule } from '@angular/router';
 export class PublicOutfitsComponent implements OnInit {
   publicOutfits: any[] = [];
 
-  constructor(private outfitService: OutfitService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadPublicOutfits();
+    this.fetchPublicOutfits();
   }
 
-  loadPublicOutfits() {
-    this.outfitService.getPublicOutfits().subscribe({
-      next: (outfits: any[]) => this.publicOutfits = outfits,
-
-      error: err => console.error('Error loading public outfits:', err)
+  fetchPublicOutfits(): void {
+    this.http.get<any[]>('https://closet-backend-pi.vercel.app/api/outfits/public').subscribe({
+      next: (data) => {
+        this.publicOutfits = data;
+      },
+      error: (err) => {
+        console.error('Failed to fetch public outfits:', err);
+      }
     });
   }
 }

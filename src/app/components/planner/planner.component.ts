@@ -29,4 +29,21 @@ export class PlannerComponent implements OnInit {
       }
     });
   }
+
+  makePublic(outfitId: string): void {
+    const token = localStorage.getItem('token');
+    this.http.patch('https://closet-backend-pi.vercel.app/api/outfits/toggle', {
+      outfitId: outfitId,
+      isPublic: true
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        this.fetchOutfits(); // Refresh the list after toggling
+      },
+      error: (err) => {
+        console.error('Failed to make outfit public:', err);
+      }
+    });
+  }
 }
