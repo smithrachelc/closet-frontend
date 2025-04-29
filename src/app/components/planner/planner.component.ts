@@ -23,13 +23,14 @@ export class PlannerComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: (data) => {
-        console.log('Fetched outfits:', data); // ✅ Add this
+        console.log('Fetched outfits:', data);
         this.outfits = data;
       },
       error: (err) => {
         console.error('Failed to fetch outfits:', err);
       }
     });
+    
   }
   
 
