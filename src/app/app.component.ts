@@ -18,7 +18,7 @@ export class AppComponent {
   constructor(private authService: AuthService, private router: Router) {
     this.authService.isLoggedInObservable().subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
-      this.isAdmin = this.authService.getRole() === 'admin'; // ✅ Check if user role is admin
+      this.isAdmin = this.authService.getRole() === 'admin'; // ✅ check after login
     });
   }
 
