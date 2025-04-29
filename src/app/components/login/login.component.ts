@@ -1,38 +1,33 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  logIn(): void {
-    this.http
-      .post<{ token: string }>(
-        `${environment.apiUrl}/api/login`,
-        { email: this.email, password: this.password }
-      )
-      .subscribe({
-        next: res => {
-          localStorage.setItem('token', res.token);
-          this.router.navigate(['/dashboard']);
-        },
-        error: err => {
-          console.error('Login error:', err);
-          this.errorMessage = 'Invalid email or password.';
-        }
-      });
+  login() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (res: any) => {
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']); // Redirect after successful login
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Invalid email or password. Please try again.';
+      }
+    });
   }
 }
