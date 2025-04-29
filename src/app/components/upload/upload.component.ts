@@ -1,72 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { ClothingService } from '../../services/clothing.service';
 
 @Component({
-  selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule]
 })
-export class ClosetDashboardComponent implements OnInit {
-  clothingItems: any[] = [];
-  filteredItems: any[] = [];
-  selectedCategory = '';
-  selectedOutfit: any[] = [];
-  outfitName = '';
-  categories: string[] = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
+export class UploadComponent {
+  name = '';
+  category = '';
+  imageFile: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
 
-  constructor(private clothingService: ClothingService) {}
+  constructor(private clothingService: ClothingService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.clothingService.getClothingItems().subscribe({
-      next: (items: any[]) => {
-        this.clothingItems = items;
-        this.filterItems();
-      },
-      error: err => {
-        console.error('Error loading items:', err);
-      }
-    });
-  }
-
-  navigateTo(category: string): void {
-    this.selectedCategory = category;
-    this.filterItems();
-  }
-
-  filterItems(): void {
-    this.filteredItems = this.selectedCategory
-      ? this.clothingItems.filter(item => item.category === this.selectedCategory)
-      : this.clothingItems;
-  }
-
-  addToOutfit(item: any): void {
-    if (!this.selectedOutfit.find(i => i._id === item._id)) {
-      this.selectedOutfit.push(item);
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl = reader.result;
+      reader.readAsDataURL(file);
     }
   }
 
-  saveOutfit(): void {
-    if (!this.outfitName.trim() || this.selectedOutfit.length === 0) return;
-
-    const outfit = {
-      name: this.outfitName,
-      items: this.selectedOutfit,
+  uploadClothing() {
+    if (!this.imageFile) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      this.clothingService.addClothingItem(this.name, this.category, base64).subscribe({
+        next: () => this.router.navigate(['/dashboard']),
+        error: err => console.error('Upload failed:', err)
+      });
     };
-
-    const existingOutfits = JSON.parse(localStorage.getItem('savedOutfits') || '[]');
-    existingOutfits.push(outfit);
-    localStorage.setItem('savedOutfits', JSON.stringify(existingOutfits));
-
-    this.outfitName = '';
-    this.selectedOutfit = [];
-  }
-
-  cancelOutfit(): void {
-    this.outfitName = '';
-    this.selectedOutfit = [];
+    reader.readAsDataURL(this.imageFile);
   }
 }
