@@ -1,55 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-planner',
   templateUrl: './planner.component.html',
   styleUrls: ['./planner.component.css']
 })
-export class PlannerComponent implements OnInit {
-  outfits: any[] = [];
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    console.log('PlannerComponent Loaded ✅');
-    this.fetchOutfits();
-  }
-
-  fetchOutfits(): void {
-    const token = localStorage.getItem('token');
-    console.log('Fetching outfits... Token:', token); // ✅ Add this line
-    this.http.get<any[]>('https://closet-backend-pi.vercel.app/api/outfits/my', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe({
-      next: (data) => {
-        console.log('Fetched outfits:', data);
-        this.outfits = data;
-      },
-      error: (err) => {
-        console.error('Failed to fetch outfits:', err);
-      }
-    });
-    
-  }
-  
-
-  makePublic(index: number): void {
-    const outfitId = this.outfits[index]._id;
-    const token = localStorage.getItem('token');
-    this.http.patch('https://closet-backend-pi.vercel.app/api/outfits/toggle', {
-      outfitId,
-      isPublic: true
-    }, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe(() => this.fetchOutfits());
-  }
-
-  deleteOutfit(index: number): void {
-    const outfitId = this.outfits[index]._id;
-    const token = localStorage.getItem('token');
-    this.http.delete(`https://closet-backend-pi.vercel.app/api/outfits/delete/${outfitId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe(() => this.fetchOutfits());
-  }
+export class PlannerComponent {
+  outfits = [
+    {
+      name: 'Date Night',
+      clothingItems: [
+        {
+          name: 'Red Dress',
+          imageUrl: 'https://res.cloudinary.com/dckb27159/image/upload/v1745949195/closet-clothing/hayss11bqfd07cvg4zfj.jpg',
+          category: 'Dresses'
+        },
+        {
+          name: 'Black Heels',
+          imageUrl: 'https://res.cloudinary.com/dckb27159/image/upload/v1745950055/closet-clothing/mehttgemkcjxlkxbr1yw.webp',
+          category: 'Shoes'
+        }
+      ]
+    }
+  ];
 }
