@@ -5,7 +5,6 @@ import * as jwt_decode_ns from 'jwt-decode';
 // @ts-ignore
 const jwt_decode = require('jwt-decode');
 
-
 export interface DecodedToken {
   id: string;
   email: string;
@@ -22,14 +21,16 @@ export class AuthService {
   constructor(private http: HttpClient) {
     const token = this.getToken();
     if (token) {
-      const decoded = jwt_decode(token) as DecodedToken; // ✅
-
+      const decoded = jwt_decode(token) as DecodedToken;
       this.userRole.next(decoded.role || '');
     }
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/login`, { email, password });
+    return this.http.post(`${this.baseUrl}/login`, {
+      username: email,   // ✅ important fix: send "username" instead of "email"
+      password
+    });
   }
 
   signup(name: string, email: string, password: string) {
@@ -52,7 +53,6 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-  
 
   isLoggedIn(): boolean {
     return this.loggedIn.value;

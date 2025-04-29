@@ -1,35 +1,35 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class SignupComponent {
-  name = '';
-  email = '';
-  password = '';
-  errorMessage = '';
+  name: string = '';
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   signup() {
     this.authService.signup(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
-        this.authService.saveToken(res.token);
-        this.router.navigate(['/dashboard']);
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/closet-dashboard']);
       },
       error: (err) => {
-        this.errorMessage = 'Signup failed';
+        console.error('Signup failed:', err);
+        this.errorMessage = 'Failed to sign up.';
       }
     });
   }
-  
-  
 }
