@@ -10,6 +10,6 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   alertFeature() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/login']);
   }
 }

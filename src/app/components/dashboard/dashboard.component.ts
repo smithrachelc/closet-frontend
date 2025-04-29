@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ClothingService } from '../../services/clothing.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,19 +16,24 @@ export class DashboardComponent implements OnInit {
   selectedCategory = '';
   selectedOutfit: any[] = [];
   outfitName = '';
-  categories: string[] = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
+  categories = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
 
-  constructor(private clothingService: ClothingService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.clothingService.getClothingItems().subscribe({
-      next: (items: any[]) => {
-        this.clothingItems = items;
+    this.fetchClothing();
+  }
+
+  fetchClothing(): void {
+    const token = localStorage.getItem('token');
+    this.http.get<any[]>('https://closet-backend-pi.vercel.app/api/clothing/my', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: (data) => {
+        this.clothingItems = data;
         this.filterItems();
       },
-      error: err => {
-        console.error('Error loading items:', err);
-      }
+      error: (err) => console.error('Failed to load clothing items:', err)
     });
   }
 
