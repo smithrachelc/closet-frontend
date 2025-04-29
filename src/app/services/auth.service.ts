@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'https://closet-backend-pi.vercel.app/api/users';
+  private baseUrl = 'https://closet-backend-pi.vercel.app/api/auth';
 
   constructor(private http: HttpClient) {}
 
