@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClothingService {
-  private baseUrl = 'https://closet-backend-pi.vercel.app/clothing';
+  private baseUrl = 'https://closet-backend-pi.vercel.app/clothing/upload';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
