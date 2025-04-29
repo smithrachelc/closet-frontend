@@ -1,33 +1,30 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // ✅ Add ReactiveFormsModule
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  signupForm: FormGroup;
-  successMessage: string = '';
+  name = '';
+  email = '';
+  password = '';
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
-    this.signupForm = this.fb.group({
-      fullName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+  constructor(private authService: AuthService, private router: Router) {}
+
+  signup() {
+    this.authService.signup(this.name, this.email, this.password).subscribe({
+      next: (res: any) => {
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']); // or home
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Sign up failed. Email may already be in use.';
+      }
     });
-  }
-
-  onSubmit() {
-    if (this.signupForm.valid) {
-      console.log('User signed up:', this.signupForm.value);
-      this.successMessage = 'Sign-up Successful! Welcome, ' + this.signupForm.value.fullName;
-      this.signupForm.reset();
-    } else {
-      this.successMessage = 'Please fill in all required fields correctly.';
-    }
   }
 }

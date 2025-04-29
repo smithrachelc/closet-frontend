@@ -1,28 +1,29 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  email = '';
+  password = '';
+  errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  logIn() {
-    // ✅ Check against hardcoded credentials
-    if (this.email === 'smithrachelc@gmail.com' && this.password === 'Tucker@1uno!') {
-      this.router.navigate(['/dashboard']); // ✅ Use your correct dashboard route
-    } else {
-      this.errorMessage = 'Incorrect email or password.';
-    }
+  login() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (res: any) => {
+        this.authService.saveToken(res.token);
+        this.router.navigate(['/dashboard']); // after login redirect
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Invalid email or password';
+      }
+    });
   }
 }
