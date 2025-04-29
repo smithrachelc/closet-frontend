@@ -27,20 +27,12 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/login`, {
-      email,
-      password
-    });
+    return this.http.post(`${this.baseUrl}/login`, { email, password });
   }
 
   signup(name: string, email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/register`, {
-      name,
-      email,
-      password
-    });
+    return this.http.post(`${this.baseUrl}/register`, { name, email, password });
   }
-  
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
