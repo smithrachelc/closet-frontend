@@ -3,12 +3,11 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-planner',
-  standalone: true,
   templateUrl: './planner.component.html',
   styleUrls: ['./planner.component.css']
 })
 export class PlannerComponent implements OnInit {
-  savedOutfits: any[] = [];
+  outfits: any[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -22,8 +21,7 @@ export class PlannerComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: (data) => {
-        console.log('Fetched outfits:', data);
-        this.savedOutfits = data;
+        this.outfits = data;
       },
       error: (err) => {
         console.error('Failed to fetch outfits:', err);
@@ -31,20 +29,22 @@ export class PlannerComponent implements OnInit {
     });
   }
 
-  makePublic(outfitId: string): void {
+  makePublic(index: number): void {
+    const outfitId = this.outfits[index]._id;
     const token = localStorage.getItem('token');
     this.http.patch('https://closet-backend-pi.vercel.app/api/outfits/toggle', {
-      outfitId: outfitId,
+      outfitId,
       isPublic: true
     }, {
       headers: { Authorization: `Bearer ${token}` }
-    }).subscribe({
-      next: () => {
-        this.fetchOutfits();
-      },
-      error: (err) => {
-        console.error('Failed to make outfit public:', err);
-      }
-    });
+    }).subscribe(() => this.fetchOutfits());
+  }
+
+  deleteOutfit(index: number): void {
+    const outfitId = this.outfits[index]._id;
+    const token = localStorage.getItem('token');
+    this.http.delete(`https://closet-backend-pi.vercel.app/api/outfits/delete/${outfitId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe(() => this.fetchOutfits());
   }
 }
