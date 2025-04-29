@@ -22,7 +22,7 @@ export class PlannerComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: (data) => {
-        console.log('Fetched outfits:', data); // 👈 add this line
+        console.log('Fetched outfits:', data);
         this.savedOutfits = data;
       },
       error: (err) => {
@@ -30,7 +30,6 @@ export class PlannerComponent implements OnInit {
       }
     });
   }
-  
 
   makePublic(outfitId: string): void {
     const token = localStorage.getItem('token');
