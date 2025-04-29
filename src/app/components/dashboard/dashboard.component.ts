@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
     const token = localStorage.getItem('token');
     this.http.post('https://closet-backend-pi.vercel.app/api/outfits/save', {
       name: this.outfitName,
-      items: this.selectedOutfit
+      clothingItems: this.selectedOutfit
     }, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
