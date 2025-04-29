@@ -1,35 +1,33 @@
 import { Component } from '@angular/core';
+import { ClothingService } from '../../services/clothing.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ClothingService } from '../../services/clothing.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-upload-clothing',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  selector: 'app-upload-clothing',
   templateUrl: './upload-clothing.component.html',
-  styleUrls: ['./upload-clothing.component.css']
+  styleUrls: ['./upload-clothing.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule]
 })
-
 export class UploadClothingComponent {
   clothingName: string = '';
   clothingCategory: string = '';
-  categories: string[] = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
   selectedImageFile: File | null = null;
   imageDataUrl: string | null = null;
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private clothingService: ClothingService, private http: HttpClient) {}
+  categories: string[] = ['Tops', 'Bottoms', 'Dresses', 'Jackets', 'Shoes', 'Accessories'];
+
+  constructor(private clothingService: ClothingService) {}
 
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.selectedImageFile = file;
 
-      // For image preview
       const reader = new FileReader();
       reader.onload = () => {
         this.imageDataUrl = reader.result as string;
@@ -40,8 +38,7 @@ export class UploadClothingComponent {
 
   uploadClothing(): void {
     if (!this.clothingName.trim() || !this.clothingCategory || !this.selectedImageFile) {
-      this.errorMessage = 'All fields are required.';
-      this.successMessage = '';
+      this.errorMessage = 'Please fill out all fields and select an image.';
       return;
     }
 
@@ -51,18 +48,17 @@ export class UploadClothingComponent {
     formData.append('image', this.selectedImageFile);
 
     this.clothingService.addClothingItem(formData).subscribe({
-      next: (response) => {
-        this.successMessage = 'Clothing item uploaded successfully!';
+      next: (res: any) => {
+        this.successMessage = 'Clothing uploaded successfully!';
         this.errorMessage = '';
-        // Reset form
         this.clothingName = '';
         this.clothingCategory = '';
         this.selectedImageFile = null;
         this.imageDataUrl = null;
       },
       error: (err) => {
-        console.error('Upload error:', err);
-        this.errorMessage = 'Upload failed. Please try again.';
+        console.error('Upload failed:', err);
+        this.errorMessage = 'Failed to upload clothing. Try again.';
         this.successMessage = '';
       }
     });

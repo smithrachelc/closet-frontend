@@ -6,16 +6,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
   standalone: true,
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   imports: [CommonModule, FormsModule, RouterModule]
 })
 export class LoginComponent {
-  email = '';
-  password = '';
-  errorMessage = '';
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -23,12 +23,16 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (res: any) => {
         this.authService.saveToken(res.token);
-        this.router.navigate(['/dashboard']);
+
+        // ✅ Small timeout to ensure state update before navigating
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 100); // 100 milliseconds
       },
       error: (err) => {
-        this.errorMessage = 'Login failed';
+        console.error('Login failed:', err);
+        this.errorMessage = 'Login failed. Please check your credentials.';
       }
     });
   }
-  
 }
