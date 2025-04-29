@@ -7,9 +7,6 @@
   <a routerLink="/planner">Outfit Planner</a>
   <a routerLink="/public">Public Outfits</a>
   <a routerLink="/upload">Upload Clothing</a>
-  <a routerLink="/admin">Admin</a>
-  <a routerLink="/login">Login</a>
-  <a routerLink="/signup">Sign Up</a>
 </nav>
 
 <div class="page">
@@ -24,8 +21,8 @@
   </div>
 
   <div class="card-grid" *ngIf="filteredItems.length > 0; else noItems">
-    <div class="card" *ngFor="let item of filteredItems">
-      <img [src]="item.imageUrl" alt="{{ item.name }}" />
+    <div class="card small" *ngFor="let item of filteredItems">
+      <img [src]="item.imageUrl" alt="{{ item.name }}">
       <p>{{ item.name }}</p>
       <button class="btn" (click)="addToOutfit(item)">Add</button>
     </div>
@@ -38,7 +35,7 @@
   <div class="form-box" *ngIf="selectedOutfit.length > 0">
     <h3>Selected Items</h3>
     <div class="card-grid">
-      <div class="card" *ngFor="let item of selectedOutfit">
+      <div class="card small" *ngFor="let item of selectedOutfit">
         <img [src]="item.imageUrl" alt="{{ item.name }}">
         <p>{{ item.name }}</p>
       </div>
