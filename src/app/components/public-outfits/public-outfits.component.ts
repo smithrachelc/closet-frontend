@@ -1,24 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { OutfitService } from '../../services/outfit.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-public-outfits',
   standalone: true,
-  imports: [CommonModule],
+  selector: 'app-public-outfits',
   templateUrl: './public-outfits.component.html',
-  styleUrls: ['./public-outfits.component.css']
+  styleUrls: ['./public-outfits.component.css'],
+  imports: [CommonModule, RouterModule]
 })
 export class PublicOutfitsComponent implements OnInit {
-  publicOutfits: any[] = [];
+  outfits: any[] = [];
 
   constructor(private outfitService: OutfitService) {}
 
   ngOnInit(): void {
-    this.outfitService.publicOutfits$.subscribe(outfits => {
-      this.publicOutfits = outfits;
-    });
+    this.loadPublicOutfits();
+  }
 
-    this.outfitService.refreshPublicOutfits(); // Ensure latest data is loaded
+  loadPublicOutfits() {
+    this.outfitService.getPublicOutfits().subscribe({
+      next: (outfits: any) => {
+        this.outfits = outfits;
+      },
+      error: (err) => {
+        console.error('Error fetching public outfits:', err);
+      }
+    });
   }
 }
