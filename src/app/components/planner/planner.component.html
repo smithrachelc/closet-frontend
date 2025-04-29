@@ -1,22 +1,15 @@
-<div class="page">
+<div class="outfit-list">
   <h2>Saved Outfits</h2>
+  <div *ngFor="let outfit of savedOutfits; let i = index" class="outfit-card">
+    <h3>{{ outfit.name }}</h3>
 
-  <div *ngIf="savedOutfits.length > 0; else noOutfits">
-    <div class="card-grid">
-      <div class="card" *ngFor="let outfit of savedOutfits">
-        <h3>{{ outfit.name }}</h3>
-        <div class="card-grid">
-          <div class="card" *ngFor="let item of outfit.clothingItems">
-            <img [src]="item.imageUrl" alt="{{ item.name }}">
-            <p>{{ item.name }}</p>
-          </div>
-        </div>
-        <button class="btn" (click)="makePublic(outfit._id)">Make Public</button>
+    <div class="clothing-grid">
+      <div *ngFor="let item of outfit.clothingItems" class="clothing-item">
+        <img *ngIf="item.imageUrl" [src]="item.imageUrl" width="100" />
+        <p>{{ item.name }}</p>
       </div>
     </div>
-  </div>
 
-  <ng-template #noOutfits>
-    <p>No outfits saved yet.</p>
-  </ng-template>
+    <button (click)="makePublic(outfit._id)" class="public-btn">🌐 Make Public</button>
+  </div>
 </div>
