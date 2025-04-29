@@ -23,13 +23,13 @@ export class SignupComponent {
     this.authService.signup(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
         this.authService.saveToken(res.token);
-        this.router.navigate(['/dashboard']); // ✅ Redirect to Dashboard after signup
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Sign up failed. Email may already be in use.';
+        this.errorMessage = 'Signup failed';
       }
     });
   }
+  
   
 }
