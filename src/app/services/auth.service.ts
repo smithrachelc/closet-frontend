@@ -28,13 +28,17 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post(`${this.baseUrl}/login`, {
-      username: email,   // ✅ important fix: send "username" instead of "email"
+      email,
       password
     });
   }
 
   signup(name: string, email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/register`, { name, email, password });
+    return this.http.post(`${this.baseUrl}/register`, {
+      name,
+      email,
+      password
+    });
   }
 
   saveToken(token: string) {
