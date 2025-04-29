@@ -5,9 +5,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { PlannerComponent } from './components/planner/planner.component';
 import { PublicOutfitsComponent } from './components/public-outfits/public-outfits.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent },
