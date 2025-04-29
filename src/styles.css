@@ -1,14 +1,88 @@
-.dashboard-container {
-  padding: 20px;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #ffe3e3;
+  color: #333;
 }
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-container,
+.form-container {
+  padding: 2rem;
+}
+
 .clothing-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 1.5rem;
 }
-.clothing-item img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+
+.clothing-item {
+  background: white;
   border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 140px;
+}
+
+.clothing-item img {
+  max-width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: #e055a3;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.navbar {
+  background-color: #c700c7;
+  padding: 1rem;
+  text-align: center;
+}
+
+.navbar a {
+  color: white;
+  margin: 0 0.7rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #c700c7;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
 }
