@@ -1,5 +1,6 @@
 <div class="page">
   <h2>Items</h2>
+
   <div class="categories">
     <button *ngFor="let category of categories"
             class="btn"
@@ -8,13 +9,17 @@
     </button>
   </div>
 
-  <div class="card-grid">
+  <div class="card-grid" *ngIf="filteredItems.length > 0; else noItems">
     <div class="card" *ngFor="let item of filteredItems">
       <img [src]="item.imageUrl" alt="{{ item.name }}">
       <p>{{ item.name }}</p>
       <button class="btn" (click)="addToOutfit(item)">Add</button>
     </div>
   </div>
+
+  <ng-template #noItems>
+    <p style="margin-top: 2rem; font-size: 1.1rem; color: #555;">No items found in this category.</p>
+  </ng-template>
 
   <div class="form-box" *ngIf="selectedOutfit.length > 0">
     <h3>Selected Items</h3>
