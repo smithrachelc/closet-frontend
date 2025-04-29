@@ -15,6 +15,7 @@ export interface DecodedToken {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private baseUrl = 'https://closet-backend-theta.vercel.app/api/auth';
+
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   private userRole = new BehaviorSubject<string>('');
 
